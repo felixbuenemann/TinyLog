@@ -33,11 +33,16 @@ fileprivate func fileName(_ filePath: String) -> String {
 }
 
 fileprivate func functionNameByStrippingParameters(_ function: String) -> String {
-    if let startIndex = function.index(of: "(") {
-        return String(function[..<startIndex])
-    } else {
-        return function
-    }
+    #if swift(>=4.2)
+        if let startIndex = function.firstIndex(of: "(") {
+            return String(function[..<startIndex])
+        }
+    #else
+        if let startIndex = function.index(of: "(") {
+            return String(function[..<startIndex])
+        }
+    #endif
+    return function
 }
 
 public func log(_ msg: Any? = nil, _ prefix: String = "⚫", _ file: String = #file, _ function: String = #function, _ line: Int = #line) {
